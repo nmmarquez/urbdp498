@@ -1,0 +1,81 @@
+html, body, #container{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+#header{
+    height: 100px;  //or whatever. Note px not %.
+    width: 100%;
+}
+
+#footer{
+    height: 100px;  //or whatever. Note px not %.
+    width: 100%;
+}
+
+#map-canvas{
+    height: 100%;
+    width: 100%;
+}
+
+#display-pane{
+    position: absolute;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    font-size: 30px;
+    bottom: 50px;
+    right: 10px;
+    color: 'block';
+}
+
+#info-pane{
+    position: absolute;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    font-size: 15px;
+    bottom: 50px;
+    left: 10px;
+    color: 'black';
+    width: 300px; 
+}
+
+#title{
+    position: absolute;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(255,255,255, 0.8);
+    padding: 10px;
+    font-size: 15px;
+    top: 0px;
+    width: 600px;
+    left: 30%;
+    color: 'black';
+    text-align: center;
+
+}
+
+#form-location{
+    position: absolute;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    font-size: 15px;
+    bottom: 50px;
+    left: 40%;
+    color: 'black';
+    width: 230px; 
+}
+
+#latitude {
+    width: 40px;
+}
+
+#longitude {
+    width: 40px;
+}
+
+#input-location {
+    width: 60px;
+}
