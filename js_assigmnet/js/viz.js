@@ -2,17 +2,24 @@
 var map;
 
 //We will call an API many time, we might as well store that long string to make the rest of the code simpler
-//var root_api = "http://ec2-54-234-216-12.compute-1.amazonaws.com:5432/";
+var root_api = "http://ec2-54-234-216-12.compute-1.amazonaws.com:5432/";
 
 //define the center of the initial map
-// var mapCenter = {lat: XXX,lng:XXX};
+var mapCenter = {lat: 47.6,lng:-122.3};
+
 
 //define your markers: http://leafletjs.com/examples/custom-icons.html
-// var treeicon = L.icon({
-//     iconUrl: 'anurl',
-//     iconSize: new L.Point(XX, XX),
-//     popupAnchor: new L.Point(-XX, -XX)
-// });
+var treeicon = L.icon({
+    iconUrl: 'http://leafletjs.com/docs/images/leaf-green.png',
+		// shadowUrl: 'http://leafletjs.com/docs/images/leaf-shadow.png',
+    iconSize: [28, 48], //new L.Point(XX, XX),
+    popupAnchor: [0, 0]// new L.Point(-XX, -XX)
+});
+
+// // Lets check out the types of several objects
+// console.log(new L.Point(28, 48));
+// console.log([28, 48]);
+// console.log(L.Point(28, 48));
 
 //put all your markers on a specific layers in case you want to remove all the markers quickly
 //http://leafletjs.com/examples/layers-control.html
@@ -25,15 +32,17 @@ var map;
 $(document).ready(function() {
 
 		//set your map and some options of the view
-		//map = L.map('map-canvas').setView([mapCenter.lat,mapCenter.lng], XX);
+		map = L.map('map-canvas').setView([mapCenter.lat,mapCenter.lng], 12);
 
 		//define your tile and add it to the map
-		// L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
-		// attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-		// ,ext: 'png', minZoom:XX, maxZoom:XX}).addTo(map);
+		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
+		attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, '+
+		'<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash;'+
+		' Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		,ext: 'png', minZoom:1, maxZoom:19}).addTo(map);
 
 		//call a function that will ad the markers
-		//marker_sample();
+		marker_sample();
 		//marker_cluster();
 		//marker_heatmap();
 		//marker_radius();
@@ -60,47 +69,51 @@ $(document).ready(function() {
 	// })
 
 	//define your function for drawing the sample markers
-	//function marker_sample() {
+	function marker_sample() {
 
-		//call the api where the data is stored
-		//$.getJSON( root_api + "trees/sample", function( data ) {
-					
-					//Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
-					//$.each(data, function(k,v){
-						
-						//add to the map the marker corresponding to one instance of a tree
-						//var marker = L.marker([XX, XX]).addTo(map)
-						//var marker = L.marker([XX, XX],{icon: treeicon}).addTo(map);
-						//below the version with a click event added
-						//var marker = L.marker([XX, XX],{icon: treeicon}).on('click', function() {
-									//get description data for your marker
-									//$.getJSON(root_api + "trees/description/" + something, function(data) {
-										//define your popup and add some content in it
-										//var popup = L.popup().setContent(somecontent);
-										//version if you want to specify some options for your popup
-										//var popup = L.popup({options there}).setContent(somecontent);
-										//bind your popup to your marker and open it
-										//marker.bindPopup(popup).openPopup();
-									//})
+		// call the api where the data is stored
+		$.getJSON( root_api + "trees/sample", function( data ) {
 
-								//})
-							//add the marker to the map
-							//.addTo(map);
+					// Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
+					$.each(data, function(k,v){
 
-					//});
+						// // add to the map the marker corresponding to one instance of a tree
+						// var marker = L.marker([v.point_y, v.point_x]).addTo(map);
+						// console.log(v.point_x, v.point_y);
+						//var marker = L.marker([v.point_y, v.point_x],{icon: treeicon}).addTo(map);
+						// below the version with a click event added
+						var marker = L.marker([v.point_y, v.point_x],{icon: treeicon}).on('click', function() {
+									// get description data for your marker
+									$.getJSON(root_api + "trees/description/" + v.fid, function(data) {
+										// define your popup and add some content in it
+										var popup = L.popup().setContent(data[0].tree_type);
+										// version if you want to specify some options for your popup
+										// var popup = L.popup({options_there}).setContent(somecontent);
+										// bind your popup to your marker and open it
+										marker.bindPopup(popup).openPopup();
+										for (var prop in data ) {
+										    console.log( "Object: " + prop );
+										}
+									});
 
-		//});
+								})
+							// add the marker to the map
+							.addTo(map);
 
-	//}; //end of function marker_sample();
+					});
+
+		});
+
+	}; //end of function marker_sample();
 
 	//function marker_cluster() {
 
 		//var markerClusters = L.markerClusterGroup();
 
 		//$.getJSON( root_api + "trees", function( data ) {
-					
+
 					//$.each(data, function(k,v){
-						
+
 						//var marker = L.marker([XX, XX]).addTo(map);
 						//var marker = L.marker([XX, XX],{icon: treeicon});
 						//markerClusters.addLayer(marker);
@@ -116,16 +129,16 @@ $(document).ready(function() {
 	//function marker_heatmap() {
 
 		//$.getJSON( root_api + "trees", function( data ) {
-					
+
 					//$.each(data, function(k,v){
-						
+
 						//markerArray.push({lat:XX, lng: v.XX});
 
 					//});
 
 				//var heat = L.heatLayer(markerArray, {
 											            //radius: 14,
-											            //blur: 15, 
+											            //blur: 15,
 											            //maxZoom: 20,
 											        //});
 				//heat.addTo(map);
@@ -141,15 +154,15 @@ $(document).ready(function() {
 	//var radius = 500;
 
 	// 	$.getJSON( root_api + "trees/around/" + radius + "/" + mapCenter.lat + "/" + mapCenter.lng, function( data ) {
-					
+
 	//				//use this variable to return the total number of trees in the window (last step of the workshop)
 	//				//var total_trees = 0;
 
 	// 				$.each(data[0], function(k,v){
-						
+
 	// 					//var marker = L.marker([XX, XX]).addTo(map);
 	// 					var marker = L.marker([v.POINT_Y, v.POINT_X],{icon: treeicon}).on('click', function() {
-								
+
 	// 							$.getJSON(root_api + "trees/description/" + something, function(data) {
 	// 								var popup = L.popup().setContent(somecontent);
 	// 								//var popup = L.popup({options there}).setContent(somecontent);
@@ -170,3 +183,5 @@ $(document).ready(function() {
 	// }; //end of function marker_radius
 
 });
+
+console.log("this is the main source for debugging");
