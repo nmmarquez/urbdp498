@@ -16,6 +16,33 @@ var treeicon = L.icon({
     popupAnchor: [0, 0]// new L.Point(-XX, -XX)
 });
 
+function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);  // deg2rad below
+  var dLon = deg2rad(lon2-lon1);
+  var a =
+    Math.sin(dLat/2) * Math.sin(dLat/2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon/2) * Math.sin(dLon/2)
+    ;
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  return d;
+}
+
+function deg2rad(deg) {
+  return deg * (Math.PI/180)
+}
+
+function calcScreenRadius(){
+  var lat1 = map.getBounds()._southWest.lat;
+  var lon1 = map.getBounds()._southWest.lng;
+  var lat2 = map.getBounds()._northEast.lat;
+  var lon2 = map.getBounds()._northEast.lng;
+  var rad = getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) * 1000 / 2.01;
+  return rad
+}
+
 // // Lets check out the types of several objects
 // console.log(new L.Point(28, 48));
 // console.log([28, 48]);
@@ -23,16 +50,16 @@ var treeicon = L.icon({
 
 //put all your markers on a specific layers in case you want to remove all the markers quickly
 //http://leafletjs.com/examples/layers-control.html
-//var markers = new L.FeatureGroup();
+var markers = new L.FeatureGroup();
 
 //push all the data in this array in case you are using the heatmap plugin
-//var markerArray = [];
+var markerArray = [];
 
 //https://learn.jquery.com/using-jquery-core/document-ready/
 $(document).ready(function() {
 
 		//set your map and some options of the view
-		map = L.map('map-canvas').setView([mapCenter.lat,mapCenter.lng], 12);
+		map = L.map('map-canvas').setView([mapCenter.lat,mapCenter.lng], 17);
 
 		//define your tile and add it to the map
 		L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.{ext}', {
@@ -42,20 +69,20 @@ $(document).ready(function() {
 		,ext: 'png', minZoom:1, maxZoom:19}).addTo(map);
 
 		//call a function that will ad the markers
-		marker_sample();
-		//marker_cluster();
-		//marker_heatmap();
-		//marker_radius();
+		// marker_sample();
+		// marker_cluster();
+		// marker_heatmap();
+		marker_radius();
 
 	//do something when there is a drag event: http://leafletjs.com/reference.html#events
-	//map.on('dragend', function() {
-		//get the coordinates of the center of the map
-		//mapCenter = L.latLng(map.getCenter());
-		//if you are using a feature group layer, remove the markers
-		//map.removeLayer(markers);
-		//draw the markers again
-		//marker_radius();
-	//}); //end of drag event
+	map.on('dragend', function() {
+		// get the coordinates of the center of the map
+		mapCenter = L.latLng(map.getCenter());
+		// if you are using a feature group layer, remove the markers
+		map.removeLayer(markers);
+		// draw the markers again
+		marker_radius();
+	}); //end of drag event
 
 	// $("#input-location").on("click", function() {
 	// 	var latitude = $("#latitude").val();
@@ -72,7 +99,10 @@ $(document).ready(function() {
 	function marker_sample() {
 
 		// call the api where the data is stored
-		$.getJSON( root_api + "trees/sample", function( data ) {
+		$.getJSON( root_api + "trees", function( data ) {
+
+          // add the clustering variable
+          var markerClusters = L.markerClusterGroup();
 
 					// Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
 					$.each(data, function(k,v){
@@ -82,6 +112,7 @@ $(document).ready(function() {
 						// console.log(v.point_x, v.point_y);
 						//var marker = L.marker([v.point_y, v.point_x],{icon: treeicon}).addTo(map);
 						// below the version with a click event added
+
 						var marker = L.marker([v.point_y, v.point_x],{icon: treeicon}).on('click', function() {
 									// get description data for your marker
 									$.getJSON(root_api + "trees/description/" + v.fid, function(data) {
@@ -91,96 +122,93 @@ $(document).ready(function() {
 										// var popup = L.popup({options_there}).setContent(somecontent);
 										// bind your popup to your marker and open it
 										marker.bindPopup(popup).openPopup();
-										for (var prop in data ) {
-										    console.log( "Object: " + prop );
-										}
 									});
 
 								})
 							// add the marker to the map
-							.addTo(map);
+							//.addTo(map);
+
+            // add marker to cluster object
+            markerClusters.addLayer(marker);
 
 					});
+
+          // add the cluster to the map
+          map.addLayer(markerClusters);
 
 		});
 
 	}; //end of function marker_sample();
 
-	//function marker_cluster() {
 
-		//var markerClusters = L.markerClusterGroup();
+	function marker_heatmap() {
 
-		//$.getJSON( root_api + "trees", function( data ) {
+		$.getJSON( root_api + "trees", function( data ) {
 
-					//$.each(data, function(k,v){
+					$.each(data, function(k,v){
 
-						//var marker = L.marker([XX, XX]).addTo(map);
-						//var marker = L.marker([XX, XX],{icon: treeicon});
-						//markerClusters.addLayer(marker);
+						markerArray.push({lat:v.point_y, lng: v.point_x});
 
-					//});
+					});
 
-		//});
+				var heat = L.heatLayer(markerArray, {
+											            radius: 14,
+											            blur: 15,
+											            maxZoom: 20,
+											        });
+				heat.addTo(map);
 
-		//map.addLayer(markerClusters);
+		});
 
-	//}; //end of function marker_cluster
+	}; //end of function marker_heatmap
 
-	//function marker_heatmap() {
+  function marker_radius() {
 
-		//$.getJSON( root_api + "trees", function( data ) {
+    markers.clearLayers();
 
-					//$.each(data, function(k,v){
+    var radius = calcScreenRadius();
 
-						//markerArray.push({lat:XX, lng: v.XX});
+    $.getJSON( root_api + "trees/around/" + radius + "/" + mapCenter.lat + "/" + mapCenter.lng, function( data ) {
 
-					//});
+          //use this variable to return the total number of trees in the window (last step of the workshop)
+          var total_trees = 0;
+          // cluster group variable
+          var markerClusters = L.markerClusterGroup();
 
-				//var heat = L.heatLayer(markerArray, {
-											            //radius: 14,
-											            //blur: 15,
-											            //maxZoom: 20,
-											        //});
-				//heat.addTo(map);
+          $.each(data, function(k,v){
 
-		//});
+            //var marker = L.marker([XX, XX]).addTo(map);
+            var marker = L.marker([v.point_y, v.point_x],{icon: treeicon}).on('click', function() {
+                  // get description data for your marker
+                  $.getJSON(root_api + "trees/description/" + v.fid, function(data) {
+                    // define your popup and add some content in it
+                    var popup = L.popup().setContent(data[0].tree_type);
+                    // version if you want to specify some options for your popup
+                    // var popup = L.popup({options_there}).setContent(somecontent);
+                    // bind your popup to your marker and open it
+                    marker.bindPopup(popup).openPopup();
+                  });
 
-	//}; //end of function marker_heatmap
+                })
+              // add the marker to the map
+              //.addTo(map);
 
-	// function marker_radius() {
+            // add marker to cluster object
+            markerClusters.addLayer(marker);
+            total_trees += 1;
+            console.log(total_trees);
 
-	// 	markers.clearLayers();
+          });
 
-	//var radius = 500;
+      // add the cluster to the map
+      markers.addLayer(markerClusters);
+      map.addLayer(markers);
+      $("#treeNum").html(total_trees);
 
-	// 	$.getJSON( root_api + "trees/around/" + radius + "/" + mapCenter.lat + "/" + mapCenter.lng, function( data ) {
+    });
 
-	//				//use this variable to return the total number of trees in the window (last step of the workshop)
-	//				//var total_trees = 0;
+  }; //end of function marker_radius
 
-	// 				$.each(data[0], function(k,v){
-
-	// 					//var marker = L.marker([XX, XX]).addTo(map);
-	// 					var marker = L.marker([v.POINT_Y, v.POINT_X],{icon: treeicon}).on('click', function() {
-
-	// 							$.getJSON(root_api + "trees/description/" + something, function(data) {
-	// 								var popup = L.popup().setContent(somecontent);
-	// 								//var popup = L.popup({options there}).setContent(somecontent);
-	// 								marker.bindPopup(popup).openPopup();
-	// 							})
-
-	// 						});
-	// 					markers.addLayer(marker);
-	//					//total_trees += 1;
-
-	// 				});
-
-	// 		map.addLayer(markers);
-	//		//$("#treeNum").html(total_trees);
-
-	// 	});
-
-	// }; //end of function marker_radius
 
 });
 
