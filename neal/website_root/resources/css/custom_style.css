@@ -1,1 +1,28 @@
-mapid { height: 180px; }
+/*map{ height: 180px; }*/
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-bottom: 2rem;
+}
+
+#map
+{
+    width: 100px;
+    height:100px;
+    min-height: 100%;
+    min-width: 100%;
+    display: block;
+}
+
+html, body
+{
+    height: 100%;
+}
+
+.fill
+{
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+    min-width: 100%;
+}
