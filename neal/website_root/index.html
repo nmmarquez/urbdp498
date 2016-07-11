@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
     <!-- Bootstrap core CSS -->
     <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 
 </head>
 
@@ -32,20 +33,43 @@
       </ul>
     </nav>
 
-    <div class="container fill">
-      <div id="map"></div>
+   <div class="container fill">
+    <div id="content">
+        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+            <li class="active"><a href="#Map" data-toggle="tab">Map</a></li>
+            <li><a href="#Time_Trend" data-toggle="tab">Time_Trend</a></li>
+            <li><a href="#Histogram" data-toggle="tab">Histogram</a></li>
+        </ul>
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="Map">
+                <h1>Map</h1>
+                <div class="container fill">
+                  <div id="map"></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="Time_Trend">
+                <h1>Time Trend</h1>
+                <div class="container fill">
+                  <div id="graph1" style="width:90%; height:400px;"></div>
+                </div>
+            </div>
+            <div class="tab-pane" id="Histogram">
+                <h1>Histogram</h1>
+                <div class="container fill">
+                  <div id="hist1"></div>
+                  <script src="./resources/js/d3_histogram.js"></script>
+                </div>
+            </div>
+            <div class="tab-pane" id="green">
+                <h1>Green</h1>
+                <p>green green green green green</p>
+            </div>
+            <div class="tab-pane" id="blue">
+                <h1>Blue</h1>
+                <p>blue blue blue blue blue</p>
+            </div>
+        </div>
     </div>
-
-    <!-- Example row of columns -->
-    <div class="row">
-      <div class="col-md-5">
-        <img src="http://www.labri.fr/perso/nrougier/teaching/matplotlib/figures/exercice_1.png"
-             alt="Graph 01" height="500" width="500">
-      </div>
-      <div class="col-md-5">
-        <img src="http://www.labri.fr/perso/nrougier/teaching/matplotlib/figures/exercice_1.png"
-             alt="Graph 02" height="500" width="500">
-     </div>
    </div>
 
 
@@ -59,6 +83,8 @@
     <script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
     <script src="./resources/js/map.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="./resources/js/plots.js"></script>
+    <script src="https://cdn.rawgit.com/highcharts/highcharts/master/js/themes/dark-unica.js"></script>
 
 
 
