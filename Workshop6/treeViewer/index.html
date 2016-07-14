@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<head>
+     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+     <meta content="utf-8" http-equiv="encoding">
+	<title>Workshop 4 - Seattle Trees Map</title>
+     <link rel="stylesheet" href="css/leaflet.css" />
+     <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css" />
+	<link rel='stylesheet' id='font-css'  href='./css/style.css' type='text/css' media='all' />
+</head>
+<body>
+<div id='container'>
+     <div id='map-canvas'></div>
+     <div id="title">
+     	 <h1>Seattle Trees Map</h1>
+     </div>
+     <div id="info-pane">
+     </div>
+     <div id="display-pane">
+     		<div><span id="treeNum">0</span> trees returned</div>
+     </div>
+
+     <div id="form-location">
+          <a>Lat:</a>
+          <input type="text" id="latitude"  />
+          <a>Long:</a>
+          <input type="text" id="longitude"  />
+          <button type="button" id="input-location">Center</button>
+     </div>
+
+     <div id="tree_types">
+          <div>
+               <h3>Display by Tree Type</h3>
+               <div id="types">
+                    <p>
+                         <a href="#" id="Maple">Maple</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Prunus">Prunus</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Hawthorn">Hawthorn</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Apple Tree">Apple Tree</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Ash">Ash</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Oak">Oak</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Sweet Gum">Sweet Gum</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Pear Tree">Pear Tree</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Birch">Birch</a>
+                    </p>
+
+                    <p>
+                         <a href="#" id="Tilia Tree">Tilia Tree</a>
+                    </p>
+               </div>
+               
+               <p>
+                    <small>
+                         <a href="#" id="clearLink" class="right">Clear all Markers</a>
+                    </small>
+               </p>
+          </div>
+     </div>
+
+</div>
+
+<!-- The Javascript of libraries gets Loaded Here -->
+<script type='text/javascript' src='http://code.jquery.com/jquery-1.10.2.min.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://arshaw.com/xdate/downloads/0.8/xdate.js'></script>
+<script src="js/leaflet.js"></script>
+<script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js'></script>
+<script src="http://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+<!-- load the javascript file in your html file -->
+ <script type='text/javascript' src='js/viz.js'></script>
+<!--  Load the highcharts library-->
+
+
+</body>
+</html>
