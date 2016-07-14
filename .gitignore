@@ -4,3 +4,4 @@
 .idea/
 *.csv
 *.sql
+Workshop5/node_modules/*

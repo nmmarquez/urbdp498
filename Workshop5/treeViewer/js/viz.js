@@ -3,7 +3,7 @@ var map;
 
 //We will call an API many time, we might as well store that long string to make the rest of the code simpler
 //STEP 10: enter here your server URL (ex: http://vergil.u.washington.edu:34001) - Don't forget to put it in quotation marks
-var root_api = XX;
+var root_api = 'http://nmarquez.ovid.u.washington.edu:1111/';
 
 var mapCenter = {lat: 47.654967,lng:-122.312668};
 
@@ -52,7 +52,7 @@ $(document).ready(function() {
 				draw_sample()
 			}
 			else {
-		    	draw_type(type_tree);	
+		    	draw_type(type_tree);
 			}
 		}
 	})
@@ -72,7 +72,8 @@ $(document).ready(function() {
 	//STEP 13: in case you want to have a global behavior for all tree types
 	$("#types a").click(function(event) {
 		markers.clearLayers();
-		type_tree = $(this).attr("id"); //console.log($(this).attr("id"),this.id)
+		type_tree = $(this).attr("id");
+    console.log($(this).attr("id"),this.id);
 		draw_type(type_tree);
 	})
 
@@ -87,86 +88,86 @@ $(document).ready(function() {
 		if (type_tree == "") {
 			//draw_sample()
 			//because the map can keep moving once you stop dragging the map, add a short delay
-			setTimeout(draw_sample(),500)	
+			setTimeout(draw_sample(),500)
 		}
 		else {
-	    	//draw_type(type_tree);	
-	    	setTimeout(draw_type(type_tree),500)		
+	    	//draw_type(type_tree);
+	    	setTimeout(draw_type(type_tree),500)
 		}
     });
 
 	//STEP 11: from here to the end of draw_sample function
 	//define your function for drawing 100 markers in the window
-	// function draw_sample() {
+	function draw_sample() {
 
-	// 	//call the api where the data is stored - notice the use of map.getBounds()
-	// 	$.getJSON( root_api + "trees/sample" + "/" + map.getBounds().getSouth() + "/" + map.getBounds().getNorth() + "/" + map.getBounds().getWest() + "/" + map.getBounds().getEast(), function( data ) {
+		//call the api where the data is stored - notice the use of map.getBounds()
+		$.getJSON( root_api + "trees/sample" + "/" + map.getBounds().getSouth() + "/" + map.getBounds().getNorth() + "/" + map.getBounds().getWest() + "/" + map.getBounds().getEast(), function( data ) {
 
-	// 				//create a variable to count the total number of trees displayed in the window
-	// 				var total_trees = 0;
+					//create a variable to count the total number of trees displayed in the window
+					var total_trees = 0;
 
-	// 				//Visualize the data returned by the API
-	// 				//console.log(data);
-					
-	// 				//Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
-	// 				$.each(data, function(k,v){
+					//Visualize the data returned by the API
+					//console.log(data);
 
-	// 					//Visualize each object in the array returned by the API
-	// 					//console.log(v);
-						
-	// 					//Create markers with the customized icon.
-	// 					var marker = L.marker([XX, XX],{icon: XX})
-	// 					//count the number of trees
-	// 					total_trees += 1;
-	// 					//add the current marker to the marker layer
-	// 					markers.addLayer(marker);
+					//Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
+					$.each(data, function(k,v){
 
-	// 				}); // end of the each function
+						//Visualize each object in the array returned by the API
+						//console.log(v);
 
-	// 				//add the markers
-	// 				map.addLayer(markers);
-	// 				//add the number of trees in the bottom right corner div
-	// 				$("#treeNum").html(total_trees);
+						//Create markers with the customized icon.
+						var marker = L.marker([v.POINT_Y, v.POINT_X],{icon: treeicon})
+						//count the number of trees
+						total_trees += 1;
+						//add the current marker to the marker layer
+						markers.addLayer(marker);
 
-	// 	}); // end of the getjson function
+					}); // end of the each function
 
-	// }; // end of draw_sample function
+					//add the markers
+					map.addLayer(markers);
+					//add the number of trees in the bottom right corner div
+					$("#treeNum").html(total_trees);
+
+		}); // end of the getjson function
+
+	}; // end of draw_sample function
 
 	//STEP 14: define your function for drawing the trees of a specific type
-	// function draw_type(type_tree) {
+	function draw_type(type_tree) {
 
-	// 	// console.log(root_api + "trees/XX/" + type_tree + "/" + map.getBounds().getSouth() + "/" + map.getBounds().getNorth() + "/" + map.getBounds().getWest() + "/" + map.getBounds().getEast());
+		// console.log(root_api + "trees/XX/" + type_tree + "/" + map.getBounds().getSouth() + "/" + map.getBounds().getNorth() + "/" + map.getBounds().getWest() + "/" + map.getBounds().getEast());
 
-	// 	//call the api where the data is stored
-	// 	$.getJSON( root_api + "trees/XX/" + type_tree + "/" + map.getBounds().getSouth() + "/" + map.getBounds().getNorth() + "/" + map.getBounds().getWest() + "/" + map.getBounds().getEast(), function( data ) {
+		//call the api where the data is stored
+		$.getJSON( root_api + "trees/type/" + type_tree + "/" + map.getBounds().getSouth() + "/" + map.getBounds().getNorth() + "/" + map.getBounds().getWest() + "/" + map.getBounds().getEast(), function( data ) {
 
-	// 				var total_trees = 0;
+					var total_trees = 0;
 
-	// 				//Visualize the data returned by the API
-	// 				//console.log(data);
-					
-	// 				//Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
-	// 				$.each(data, function(k,v){
+					//Visualize the data returned by the API
+					//console.log(data);
 
-	// 					//Visualize each object in the array returned by the API
-	// 					//console.log(v);
-						
-	// 					//Create markers with the customized icon.
-	// 					var marker = L.marker([XX, XX],{icon: XX});
-	// 					//count the number of trees
-	// 					total_trees += 1;
-	// 					//add the current marker to the marker layer
-	// 					markers.addLayer(marker);
+					//Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
+					$.each(data, function(k,v){
 
-	// 				}); // end of the each function
+						//Visualize each object in the array returned by the API
+						//console.log(v);
 
-	// 				//Add the markers to the map
-	// 				map.addLayer(markers);
-	// 				//add the number of trees in the bottom right corner div
-	// 				$("#treeNum").html(total_trees);
+						//Create markers with the customized icon.
+						var marker = L.marker([v.POINT_Y, v.POINT_X],{icon: treeicon});
+						//count the number of trees
+						total_trees += 1;
+						//add the current marker to the marker layer
+						markers.addLayer(marker);
 
-	// 	}); // end of the getjson function
+					}); // end of the each function
 
-	// }; //end of function draw_markers();
+					//Add the markers to the map
+					map.addLayer(markers);
+					//add the number of trees in the bottom right corner div
+					$("#treeNum").html(total_trees);
+
+		}); // end of the getjson function
+
+	}; //end of function draw_markers();
 
 }); // end of document ready function

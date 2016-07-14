@@ -11,7 +11,7 @@ var moment = require('moment');
 // Type in the terminal 'telnet localhost' and a number between 1024 and 65000
 // If it returns connection refused, the port is available and you can write it down below
 // Replace XX by the available portnumber
-var portNumber = XX;
+var portNumber = 1111;
 
 var mysql = require('mysql');
 
@@ -20,11 +20,11 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   //Replace XX by your mysql password - Make sure you use quotation marks: 'mypassword'
-  password : XX,
+  password : 'Tlaloc1',
   //Replace XX by your mysql port
-  port     : XX,
+  port     : 8000,
   //Replace XX by the name of your database - Make sure you use quotation marks: 'mydatabase'
-  database : XX
+  database : 'tree'
 });
 
 connection.connect(function(err) {
@@ -64,7 +64,7 @@ app.get('/trees/sample/:minlat/:maxlat/:minlong/:maxlong', function(req, res) {
   var maxlat = parseFloat(req.params.maxlat);
   var minlong = parseFloat(req.params.minlong);
   var maxlong = parseFloat(req.params.maxlong);
-  var sql = "SELECT * FROM test.trees_API WHERE POINT_Y BETWEEN " + minlat + " AND " + maxlat + " AND POINT_X BETWEEN " + minlong + " AND " + maxlong + " LIMIT 100";
+  var sql = "SELECT * FROM tree.trees_API WHERE POINT_Y BETWEEN " + minlat + " AND " + maxlat + " AND POINT_X BETWEEN " + minlong + " AND " + maxlong + " LIMIT 100";
   connection.query(sql, function(err, rows, fields) {
        if (err) console.log("Err:" + err);
        if(rows != undefined){
@@ -87,7 +87,7 @@ app.get('/trees/type/:type/:minlat/:maxlat/:minlong/:maxlong', function(req, res
   var maxlong = parseFloat(req.params.maxlong);
   // Below is the SQL query whose result depends on the API paramaeter and whose result will be returned in the URL
   // Replace test by the name of your database
-  var sql = "SELECT FID, POINT_X, POINT_Y FROM test.trees_API WHERE tree_type='" + type + "' AND POINT_Y BETWEEN " + minlat + " AND " + maxlat + " AND POINT_X BETWEEN " + minlong + " AND " + maxlong;
+  var sql = "SELECT FID, POINT_X, POINT_Y FROM tree.trees_API WHERE tree_type='" + type + "' AND POINT_Y BETWEEN " + minlat + " AND " + maxlat + " AND POINT_X BETWEEN " + minlong + " AND " + maxlong;
   connection.query(sql, function(err, rows, fields) {
        if (err) console.log("Err:" + err);
        if(rows != undefined){
