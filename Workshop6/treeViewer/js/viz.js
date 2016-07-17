@@ -3,7 +3,7 @@ var map;
 
 //We will call an API many time, we might as well store that long string to make the rest of the code simpler
 //STEP 10: enter here your server URL (ex: http://vergil.u.washington.edu:34001) - Don't forget to put it in quotation marks
-var root_api = "XX";
+var root_api = "http://nmarquez.ovid.u.washington.edu:1112/";
 
 var mapCenter = {lat: 47.654967,lng:-122.312668};
 
@@ -39,7 +39,7 @@ $(document).ready(function() {
 
 		//start drawing the first 100 trees within the window
 		draw_sample();
-		//draw_hist();
+		draw_hist();
 
 		//make possible to enter a lat/long in the form - Don't change anything in this click function
 	$("#input-location").on("click", function() {
@@ -203,34 +203,48 @@ $(document).ready(function() {
 			//console.log(data);
 
 			//What is the for loop doing?
+			// this function is looping through the results to build an array filled with the results from the api
 			for (i = 0; i < data.length; i++){
                         tree_types.push(data[i].tree_type);
-                        count.push(data[i].count);
+                        count.push(data[i].number);
             }
 
+			console.log(data);
+
             //Replace XX by an appropriate div to display the histogram in
-			$('#XX').highcharts({
+			$('#info-pane').highcharts({
 		        chart: {
-		            type: 'column'
+		            type: 'column', backgroundColor:'transparent'
 		        },
 		        title: {
 		            text: 'Total of Trees per Type'
 		        },
 		        xAxis: {
 		        	//replace XX by the array of categories
-		            categories: XX,
+		            categories: tree_types,
 		            title: {
 		                text: null
-		            }
+		            },
+			    labels: {
+				style: {
+				    color: 'black',
+				    fontSize:'15px'
+				}
+            		    }
 		        },
 		        yAxis: {
 		            min: 0,
 		            title: {
 		                text: 'Number of trees',
-		                align: 'high'
+		                align: 'high',
+				style: {"color": "black", "fontWeight": "bold", "font-size": "15px" }
 		            },
 		            labels: {
-		                overflow: 'justify'
+		                overflow: 'justify',
+                                style: {
+				    color: 'black',
+				    fontSize:'10px'
+				}
 		            }
 		        },
 		        tooltip: {
@@ -264,7 +278,7 @@ $(document).ready(function() {
 		        },
 		        series: [{
 		        	//replace XX by the array of values
-		        	data: XX,
+		        	data: count,
 		          showInLegend:false
 		        }]
 		    }); // end of histogram function

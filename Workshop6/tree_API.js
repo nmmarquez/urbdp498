@@ -11,7 +11,7 @@ var moment = require('moment');
 // Type in the terminal 'telnet localhost' and a number between 1024 and 65000
 // If it returns connection refused, the port is available and you can write it down below
 // Replace XX by the available portnumber
-var portNumber = 1111;
+var portNumber = 1112;
 
 var mysql = require('mysql');
 
@@ -110,7 +110,7 @@ app.get('/trees/count/:minlat/:maxlat/:minlong/:maxlong', function(req, res) {
   // Below is the SQL query whose result depends on the API paramaeter and whose result will be returned in the URL
   // Replace test by the name of your database
   var sql = "SELECT tree_type, count(tree_type) as number FROM tree.trees_API " +
-            "WHERE POINT_Y BETWEEN " + minat + " AND " + maxlat +
+            "WHERE POINT_Y BETWEEN " + minlat + " AND " + maxlat +
             "AND POINT_X BETWEEN " + minlong + " AND " + maxlong +
             "AND tree_type != 'other' " +
             "GROUP BY tree_type " +
