@@ -68,10 +68,10 @@ app.get('/crime/location/:type/:minlat/:maxlat/:minlong/:maxlong', function(req,
   var sql = "SELECT longitude, latitude, time, time_at_scene " +
             "FROM test.call_data " +
             "WHERE clearance_group_id = (SELECT clearance_group_id " +
-            "FROM test.clearance_group WHERE clearance_group_description = " +
-            type + ") " +
-            "AND longitude BETWEEN " +  minlat "AND " + maxlat +
-            "AND latitude BETWEEN " + minlong + "AND " + maxlong + " ;"
+            "FROM test.clearance_group WHERE clearance_group_description = '" +
+            type + "') " +
+            "AND latitude BETWEEN " +  minlat + "AND " + maxlat +
+            "AND longitude BETWEEN " + minlong + "AND " + maxlong + " ;"
   connection.query(sql, function(err, rows, fields) {
        if (err) console.log("Err:" + err);
        if(rows != undefined){
@@ -91,8 +91,8 @@ app.get('/crime/all/:type', function(req, res) {
   var sql = "SELECT longitude, latitude, time, time_at_scene " +
             "FROM test.call_data " +
             "WHERE clearance_group_id = (SELECT clearance_group_id " +
-            "FROM test.clearance_group WHERE clearance_group_description = " +
-            type + ");"
+            "FROM test.clearance_group WHERE clearance_group_description = '" +
+            type + "');"
   connection.query(sql, function(err, rows, fields) {
        if (err) console.log("Err:" + err);
        if(rows != undefined){
@@ -121,6 +121,42 @@ app.get('/crime/types/', function(req, res) {
        });
 });
 
+// the : indicates that you can enter different values and the URLs will be treated in the same manner
+app.get('/locations/list', function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-WithD");
+  // store the API parameter as a string variable
+  // Below is the SQL query whose result depends on the API paramaeter and whose result will be returned in the URL
+  // Replace test by the name of your database
+  var sql = "SELECT neighborhood FROM test.neighborhood ORDER BY neighborhood;"
+  connection.query(sql, function(err, rows, fields) {
+       if (err) console.log("Err:" + err);
+       if(rows != undefined){
+               res.send(rows);
+             }else{
+                res.send("");
+               }
+       });
+});
+
+// the : indicates that you can enter different values and the URLs will be treated in the same manner
+app.get('/locations/coordinates/:loc', function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-WithD");
+  // store the API parameter as a string variable
+  // Below is the SQL query whose result depends on the API paramaeter and whose result will be returned in the URL
+  // Replace test by the name of your database
+  var loc = mysql_real_escape_string(req.params.loc);
+  var sql = "SELECT latitude, longitude FROM test.neighborhood WHERE neighborhood = '" + loc + "';"
+  connection.query(sql, function(err, rows, fields) {
+       if (err) console.log("Err:" + err);
+       if(rows != undefined){
+               res.send(rows);
+             }else{
+                res.send("");
+               }
+       });
+});
 
 function mysql_real_escape_string (str) {
     return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
