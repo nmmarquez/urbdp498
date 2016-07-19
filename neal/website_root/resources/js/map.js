@@ -1,6 +1,17 @@
 var root_api = "http://nmarquez.ovid.u.washington.edu:1112/";
 var mymap = L.map('map').setView([47.6,-122.3], 13);
 
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+function text_for_html(str){
+	var new_str = str.replaceAll(" ", "%20")
+	new_str = new_str.replaceAll("/", "%2F")
+	new_str = new_str.replaceAll('"', "%22")
+	return new_str
+}
 
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
@@ -37,10 +48,28 @@ $(document).ready(function(){
 	    $('#neighborhood').val($(this).text());
 	});
 
+	$('#location_select').change(function () {
+    	    var selectedText = $(this).find("option:selected").text();
+	    
+	    // $("#test").text(selectedText);
+	});
+	
+	$('#crime_select').change(function () {
+    	    var selectedText = $(this).find("option:selected").text();
+	    
+	    $("#selected_crime").text(selectedText);
+            marker_crime();
+	    draw_timeline();
+	});
+
 	function marker_crime() {
+		markers.clearLayers();
+
+		html_crime_var = text_for_html($("#selected_crime").text());
+		console.log(html_crime_var);
 
 		// call the api where the data is stored
-		$.getJSON( root_api + "crime/all/THEFT", function( data ) {
+		$.getJSON( root_api + "crime/all/" + html_crime_var, function( data ) {
 
 	// add the clustering variable
           var markerClusters = L.markerClusterGroup();
@@ -49,9 +78,7 @@ $(document).ready(function(){
 					$.each(data, function(k,v){
 
 						// add to the map the marker corresponding to one instance of a tree
-						console.log(v);
 						var marker = L.marker([v.latitude, v.longitude]);
-						console.log(v.latitude, v.longitude);
 
             // add marker to cluster object
             markerClusters.addLayer(marker);
@@ -59,7 +86,8 @@ $(document).ready(function(){
 					});
 
           // add the cluster to the map
-          mymap.addLayer(markerClusters);
+	  markers.addLayer(markerClusters);
+          mymap.addLayer(markers);
 
 		});
 
@@ -72,8 +100,9 @@ $(document).ready(function(){
 
 		var crime_date = [];
 		var count = [];
+		html_crime_var = text_for_html($("#selected_crime").text());
 
-		$.getJSON( root_api + "crime/timeline/THEFT", function( data ) {
+		$.getJSON( root_api + "crime/timeline/" + html_crime_var, function( data ) {
 
 			//look at the data returned by your API
 			//console.log(data);
@@ -84,9 +113,6 @@ $(document).ready(function(){
                         crime_date.push(data[i].year_id);
                         count.push(data[i].NumberOfCrimes);
             		}
-		console.log(crime_date);
-		console.log(count)
-		
 
 		
 			$(function () {
