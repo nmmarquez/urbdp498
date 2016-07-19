@@ -12,28 +12,15 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
 }).addTo(mymap);
 
 
-L.marker([47.6,-122.3]).addTo(mymap)
-  .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+//put all your markers on a specific layers in case you want to remove all the markers quickly
+//http://leafletjs.com/examples/layers-control.html
+var markers = new L.FeatureGroup();
 
-L.circle([47.61,-122.25], 500, {
-  color: 'red',
-  fillColor: '#f03',
-  fillOpacity: 0.5
-}).addTo(mymap).bindPopup("I am the Loch Ness Monster.");
-
-
-var popup = L.popup();
-
-function onMapClick(e) {
-  popup
-    .setLatLng(e.latlng)
-    .setContent("You clicked the map at " + e.latlng.toString())
-    .openOn(mymap);
-}
-
-mymap.on('click', onMapClick);
 
 $(document).ready(function(){
+
+	marker_crime()
+	draw_timeline()
 
         $.getJSON(root_api + "locations/list", function( data ) {
           $.each( data, function( key, val ) {
@@ -46,4 +33,96 @@ $(document).ready(function(){
             $('#crimes select').append('<option value="' + key + '">'+val.clearance_group_description+'</option>');
           });
         });
+	$('#location_select option').on('click', function(){
+	    $('#neighborhood').val($(this).text());
+	});
+
+	function marker_crime() {
+
+		// call the api where the data is stored
+		$.getJSON( root_api + "crime/all/THEFT", function( data ) {
+
+	// add the clustering variable
+          var markerClusters = L.markerClusterGroup();
+
+					// Jquery method that allows you to iterate over an array: http://api.jquery.com/jquery.each/
+					$.each(data, function(k,v){
+
+						// add to the map the marker corresponding to one instance of a tree
+						console.log(v);
+						var marker = L.marker([v.latitude, v.longitude]);
+						console.log(v.latitude, v.longitude);
+
+            // add marker to cluster object
+            markerClusters.addLayer(marker);
+
+					});
+
+          // add the cluster to the map
+          mymap.addLayer(markerClusters);
+
+		});
+
+	}; //end of function marker_crime();
+
+
+	
+
+	function draw_timeline() {
+
+		var crime_date = [];
+		var count = [];
+
+		$.getJSON( root_api + "crime/timeline/THEFT", function( data ) {
+
+			//look at the data returned by your API
+			//console.log(data);
+
+			//What is the for loop doing?
+			// this function is looping through the results to build an array filled with the results from the api
+			for (i = 0; i < data.length; i++){
+                        crime_date.push(data[i].year_id);
+                        count.push(data[i].NumberOfCrimes);
+            		}
+		console.log(crime_date);
+		console.log(count)
+		
+
+		
+			$(function () {
+			  $('#info-pane').highcharts({
+			      title: {
+				  text: 'Crime Occurences',
+				  x: -20 //center
+			      },
+			      xAxis: {
+				  categories: crime_date
+			      },
+			      yAxis: {
+				  title: {
+				      text: 'Occurences'
+				  },
+				  plotLines: [{
+				      value: 0,
+				      width: 1,
+				      color: '#808080'
+				  }]
+			      },
+			      tooltip: {
+				  valueSuffix: ''
+			      },
+			      legend: {
+				  layout: 'vertical',
+				  align: 'right',
+				  verticalAlign: 'middle',
+				  borderWidth: 0
+			      },
+			      series: [{
+				  name: 'All Seattle',
+				  data: count
+			      }]
+			  });
+			});
+		});
+	};
 });

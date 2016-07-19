@@ -92,7 +92,28 @@ app.get('/crime/all/:type', function(req, res) {
             "FROM test.call_data " +
             "WHERE clearance_group_id = (SELECT clearance_group_id " +
             "FROM test.clearance_group WHERE clearance_group_description = '" +
-            type + "');"
+            type + "') LIMIT 10000;"
+  connection.query(sql, function(err, rows, fields) {
+       if (err) console.log("Err:" + err);
+       if(rows != undefined){
+               res.send(rows);
+             }else{
+                res.send("");
+               }
+       });
+});
+
+app.get('/crime/timeline/:type', function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-WithD");
+  //Below is the sql whose result will be returned in the URL
+  // Replace test by the name of your database
+  var type = mysql_real_escape_string(req.params.type);
+  var sql = "SELECT DATE_FORMAT(time, '%Y-%m') AS year_id, COUNT(*) AS NumberOfCrimes " +
+            "FROM test.call_data " +
+            "WHERE clearance_group_id = (SELECT clearance_group_id " +
+            "FROM test.clearance_group WHERE clearance_group_description = '" +
+            type + "') GROUP BY year_id ORDER BY year_id;"
   connection.query(sql, function(err, rows, fields) {
        if (err) console.log("Err:" + err);
        if(rows != undefined){

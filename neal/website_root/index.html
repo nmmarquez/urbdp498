@@ -8,6 +8,8 @@
     <!-- Bootstrap core CSS -->
     <link href="./resources/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css" />
 
 </head>
 
@@ -17,54 +19,29 @@
       <a class="navbar-brand" href="#">Our first map of seattle!</a>
       <ul class="nav navbar-nav">
         <li id="locations" class="nav-item active">
-          <select class="form-control">
+          <select id="location_select" class="form-control">
           </select>
         </li>
         <li id="crimes" class="nav-item active">
-          <select class="form-control">
+          <select id="crime_select" class="form-control">
           </select>
         </li>
       </ul>
     </nav>
 
-   <div class="container fill">
-    <div id="content">
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-            <li class="active"><a href="#Map" data-toggle="tab">Map</a></li>
-            <li><a href="#Time_Trend" data-toggle="tab">Time_Trend</a></li>
-            <li><a href="#Histogram" data-toggle="tab">Histogram</a></li>
-        </ul>
-        <div id="my-tab-content" class="tab-content">
-            <div class="tab-pane active" id="Map">
-                <h1>Map</h1>
-                <div class="container fill">
-                  <div id="map"></div>
-                </div>
-            </div>
-            <div class="tab-pane" id="Time_Trend">
-                <h1>Time Trend</h1>
-                <div class="container fill">
-                  <div id="graph1" style="width:90%; height:400px;"></div>
-                </div>
-            </div>
-            <div class="tab-pane" id="Histogram">
-                <h1>Histogram</h1>
-                <div class="container fill">
-                  <div id="hist1"></div>
-                  <script src="./resources/js/d3_histogram.js"></script>
-                </div>
-            </div>
-            <div class="tab-pane" id="green">
-                <h1>Green</h1>
-                <p>green green green green green</p>
-            </div>
-            <div class="tab-pane" id="blue">
-                <h1>Blue</h1>
-                <p>blue blue blue blue blue</p>
-            </div>
-        </div>
+    <div id='container'>
+         <div id='map'></div>
+         <!-- <div id="title">
+         	 <h1>Seattle Trees Map</h1>
+         </div> -->
+         <div id="info-pane">
+         </div>
+         <!-- <div id="display-pane">
+         		<div><span id="treeNum">0</span> trees returned</div>
+         </div> -->
+
+
     </div>
-   </div>
 
 
 
@@ -79,6 +56,8 @@
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="./resources/js/plots.js"></script>
     <script src="https://cdn.rawgit.com/highcharts/highcharts/master/js/themes/dark-unica.js"></script>
+    <script type='text/javascript'
+        src='http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js'></script>
 
 
 
