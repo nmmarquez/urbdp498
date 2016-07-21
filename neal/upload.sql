@@ -7,8 +7,8 @@ TERMINATED BY ','
 LINES TERMINATED BY '\n'
 IGNORE 3 LINES
 (call_id,longitude,latitude, @var1, @var2, clearance_group_id, initial_group_id)
-SET time = STR_TO_DATE(@var1, '%m/%d/%Y %H:%i:%s'),     
-time_at_scene = STR_TO_DATE(@var2, '%m/%d/%Y %H:%i:%s');
+SET time = STR_TO_DATE(@var1, '%Y-%m-%d %H:%i:%s'),     
+time_at_scene = STR_TO_DATE(@var2, '%Y-%m-%d %H:%i:%s');
 
 SET SQL_SAFE_UPDATES = 0;
 

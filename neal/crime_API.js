@@ -149,7 +149,7 @@ app.get('/locations/list', function(req, res) {
   // store the API parameter as a string variable
   // Below is the SQL query whose result depends on the API paramaeter and whose result will be returned in the URL
   // Replace test by the name of your database
-  var sql = "SELECT neighborhood FROM test.neighborhood ORDER BY neighborhood;"
+  var sql = "SELECT S_HOOD as neighborhood FROM test.neighborhood_id ORDER BY S_HOOD;"
   connection.query(sql, function(err, rows, fields) {
        if (err) console.log("Err:" + err);
        if(rows != undefined){
