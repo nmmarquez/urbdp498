@@ -1,5 +1,5 @@
 var root_api = "http://nmarquez.ovid.u.washington.edu:1112/";
-var mymap = L.map('map').setView([47.6,-122.3], 13);
+var mymap = L.map('map', { zoomControl:false }).setView([47.6,-122.3], 13);
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -21,6 +21,19 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=p
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
   id: 'mapbox.streets'
 }).addTo(mymap);
+
+// Add our zoom control manually where we want to
+var zoomControl = L.control.zoom({
+    position: 'topright'
+});
+mymap.addControl(zoomControl);
+// Add our loading control in the same position and pass the
+// zoom control to attach to it
+// var loadingControl = L.Control.loading({
+//     position: 'topright',
+//     zoomControl: zoomControl
+// });
+// mymap.addControl(loadingControl);
 
 
 //put all your markers on a specific layers in case you want to remove all the markers quickly

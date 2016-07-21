@@ -193,7 +193,7 @@ app.get('/crime/neighborhoodcount/:type', function(req, res) {
   "WHERE x.clearance_group_id = (SELECT clearance_group_id " +
   "FROM test.clearance_group " +
   "WHERE clearance_group_description = '" + type +"') " +
-  " AND y.S_HOOD IS NOT NULL" +
+  " AND y.S_HOOD IS NOT NULL " +
   "GROUP BY y.S_HOOD " +
   "ORDER BY y.S_HOOD " +
   ";"
