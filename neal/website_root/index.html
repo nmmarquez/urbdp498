@@ -15,19 +15,37 @@
 
 
 <body>
-    <nav class="navbar navbar-static-top navbar-dark bg-inverse">
-      <a class="navbar-brand" href="#">Our first map of seattle!</a>
-      <ul class="nav navbar-nav">
-        <li id="locations" class="nav-item active">
-          <select id="location_select" class="form-control">
-          </select>
-        </li>
-        <li id="crimes" class="nav-item active">
-          <select id="crime_select" class="form-control">
-          </select>
-        </li>
+  <nav class='sidebar sidebar-menu-collapsed'> <a href='#' id='justify-icon'>
+      <span class='glyphicon glyphicon-align-justify'></span>
+    </a>
+
+      <ul class='level1'>
+          <li class='active'> <a class='expandable' href='#' title='Dashboard'>
+          <span class='glyphicon glyphicon-home collapsed-element'></span>
+          <span class='expanded-element'>Dashboard</span>
+        </a>
+
+              <ul class='level2'>
+                  <li> <a href='#' title='Neighborhood'>Neighborhood</a>
+
+                  </li>
+                  <li id="locations" class="nav-item active">
+                    <select id="location_select" class="form-control">
+                    </select>
+                  </li>
+                  <li> <a href='#' title='Crime Type'>Crime Type</a>
+
+                  </li>
+                  <li id="crimes" class="nav-item active">
+                    <select id="crime_select" class="form-control">
+                    </select>
+                  </li>
+              </ul>
+          </li>
       </ul>
-    </nav>
+
+  </nav>
+
     <div id="selected_crime">ANIMAL COMPLAINTS</div>
 
     <div id='container'>

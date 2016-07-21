@@ -179,6 +179,34 @@ app.get('/locations/coordinates/:loc', function(req, res) {
        });
 });
 
+app.get('/crime/neighborhoodcount/:type', function(req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-WithD");
+  // store the API parameter as a string variable
+  // Below is the SQL query whose result depends on the API paramaeter and whose result will be returned in the URL
+  // Replace test by the name of your database
+  var type = mysql_real_escape_string(req.params.type);
+  var sql = "SELECT y.S_HOOD as neighborhood, count(y.S_HOOD) as crime_number " +
+  "FROM test.call_data x " +
+  "LEFT JOIN test.neighborhood_id y " +
+  "ON x.HOODS_ID = y.HOODS_ID " +
+  "WHERE x.clearance_group_id = (SELECT clearance_group_id " +
+  "FROM test.clearance_group " +
+  "WHERE clearance_group_description = '" + type +"') " +
+  " AND y.S_HOOD IS NOT NULL" +
+  "GROUP BY y.S_HOOD " +
+  "ORDER BY y.S_HOOD " +
+  ";"
+  connection.query(sql, function(err, rows, fields) {
+       if (err) console.log("Err:" + err);
+       if(rows != undefined){
+               res.send(rows);
+             }else{
+                res.send("");
+               }
+       });
+});
+
 function mysql_real_escape_string (str) {
     return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
         switch (char) {
