@@ -79,9 +79,11 @@ $(document).ready(function(){
 
 						// add to the map the marker corresponding to one instance of a tree
 						var marker = L.marker([v.latitude, v.longitude]);
+						var popup = L.popup().setContent("Crime Occured on: " + v.time);
+						marker.bindPopup(popup).openPopup();
 
-            // add marker to cluster object
-            markerClusters.addLayer(marker);
+					    // add marker to cluster object
+					    markerClusters.addLayer(marker);
 
 					});
 
@@ -117,6 +119,7 @@ $(document).ready(function(){
 		
 			$(function () {
 			  $('#info-pane').highcharts({
+			      chart:{backgroundColor:'rgba(0, 0, 0, 0.7)'},
 			      title: {
 				  text: 'Crime Occurences',
 				  x: -20 //center

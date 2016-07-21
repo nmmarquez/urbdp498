@@ -67,3 +67,7 @@ html, body, #container{
     text-align: center;
 
 }
+
+#selected_crime{
+    visibility: hidden;	
+}

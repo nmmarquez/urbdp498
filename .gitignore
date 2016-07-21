@@ -6,3 +6,4 @@
 *.sql
 Workshop5/node_modules/*
 Workshop6/node_modules/*
+data/*
