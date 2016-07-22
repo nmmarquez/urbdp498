@@ -208,3 +208,11 @@ html, body, #container{
     line-height: 0px;
     font-size: 0px;
 }
+
+#selected_neighborhood{
+    visibility: hidden;
+    display: none;
+    height:0px
+    line-height: 0px;
+    font-size: 0px;
+}

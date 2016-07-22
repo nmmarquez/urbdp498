@@ -15,7 +15,7 @@ function text_for_html(str){
 
 
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-  maxZoom: 18, minZoom: 12,
+  maxZoom: 18, minZoom: 11,
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -148,6 +148,8 @@ $(document).ready(function(){
 
 	$('#location_select').change(function () {
     	    var selectedText = $(this).find("option:selected").text();
+          $("#selected_neighborhood").text(selectedText);
+          set_neigh_view()
 
 	    // $("#test").text(selectedText);
 	});
@@ -156,7 +158,7 @@ $(document).ready(function(){
     	    var selectedText = $(this).find("option:selected").text();
 
 	    $("#selected_crime").text(selectedText);
-            marker_crime();
+      marker_crime();
 	    draw_timeline();
 	});
 
@@ -252,6 +254,20 @@ $(document).ready(function(){
 			});
 		});
 	};
+
+  function set_neigh_view(){
+    var lat = 0;
+    var long = 0;
+    var html_neigh_var = text_for_html($("#selected_neighborhood").text());
+
+    $.getJSON( root_api + "locations/coordinates/" + html_neigh_var, function( data ) {
+        lat = data[0].latitude
+        long = data[0].longitude
+        mymap.setView([lat,long], 15);
+
+    });
+
+  }
 
   function draw_hist() {
 
