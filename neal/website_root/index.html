@@ -25,34 +25,35 @@
          <!-- <div id="title">
          	 <h1>Seattle Trees Map</h1>
          </div> -->
-         <div id="info-pane">
-         </div>
-         <div id="display-pane">
-         </div>
+         <div id="info-pane"></div>
+         <div id="display-pane"></div>
+         <div id="title">SEATTLE 911 RESPONSE DATA</div>
 
 
     <!-- </div> -->
 
-    <nav class='sidebar sidebar-menu-collapsed'> <a href='#' id='justify-icon'>
+    <nav class='sidebar sidebar-menu-collapsed'>
+      <a href='#' id='justify-icon'>
         <span class='glyphicon glyphicon-align-justify'></span>
       </a>
 
         <ul class='level1'>
-            <li class='active'> <a class='expandable' href='#' title='Dashboard'>
-            <span class='glyphicon glyphicon-home collapsed-element'></span>
-            <span class='expanded-element'>Dashboard</span>
-          </a>
+            <li class='active'>
+              <a class='expandable' href='#' title='Dashboard'>
+                <span class='glyphicon glyphicon-search collapsed-element'></span>
+                <span class='expanded-element' style="font-size:20px">Dashboard</span>
+              </a>
 
                 <ul class='level2'>
-                    <li> <a href='#' title='Neighborhood'>Neighborhood</a>
-
+                    <li>
+                      <a title='Neighborhood' style="font-size:20px">Neighborhood</a>
                     </li>
                     <li id="locations" class="nav-item active">
                       <select id="location_select" class="form-control">
                       </select>
                     </li>
-                    <li> <a href='#' title='Crime Type'>Crime Type</a>
-
+                    <li>
+                      <a title='Crime Type' style="font-size:20px">Crime Type</a>
                     </li>
                     <li id="crimes" class="nav-item active">
                       <select id="crime_select" class="form-control">
@@ -60,7 +61,17 @@
                     </li>
                 </ul>
             </li>
+
+            <li class='active'>
+              <a class='expandable' href='#' title='Description'>
+                <span class='glyphicon glyphicon-chevron-right collapsed-element'></span>
+                <span class='expanded-element' style="font-size:20px">Description</span>
+              </a>
+              <ul class='level2'>
+              </ul>
+            </li>
         </ul>
+        <div> </div>
 
     </nav>
 

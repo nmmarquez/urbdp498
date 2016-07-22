@@ -53,6 +53,8 @@
                 return (function (instance) {
                     return $("#justify-icon").click(function (e) {
                         if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-collapsed")) {
+                            $("#info-pane").css({"visibility": "hidden"});
+                            $("#display-pane").css({"visibility": "hidden"});
                             instance.adjustPaddingOnExpand();
                             instance.expandMyMenu();
                             instance.showMenuTexts();
@@ -61,6 +63,8 @@
                                 color: "white"
                             });
                         } else if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-expanded")) {
+                            $("#info-pane").css({"visibility": "visible"});
+                            $("#display-pane").css({"visibility": "visible"});
                             instance.resetOriginalPaddingOnCollapse();
                             instance.collapseMyMenu();
                             instance.hideMenuTexts();

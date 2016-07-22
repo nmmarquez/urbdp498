@@ -119,6 +119,7 @@ $(document).ready(function(){
 
 
   $("#info-pane").mouseenter(function() {
+    $('#info-pane').highcharts().destroy();
     $("#info-pane").css({"width": "60%", "height": "90%"});
     draw_timeline()
   });
@@ -128,6 +129,7 @@ $(document).ready(function(){
     draw_timeline()
   });
   $("#display-pane").mouseenter(function() {
+    $('#display-pane').highcharts().destroy();
     $("#display-pane").css({"width": "60%", "height": "90%"});
     draw_hist()
   });
