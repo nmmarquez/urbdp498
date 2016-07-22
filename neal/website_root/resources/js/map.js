@@ -129,6 +129,7 @@ $(document).ready(function(){
 
 	marker_crime()
 	draw_timeline()
+  draw_hist()
 
         $.getJSON(root_api + "locations/list", function( data ) {
           $.each( data, function( key, val ) {
@@ -199,7 +200,7 @@ $(document).ready(function(){
 
 		var crime_date = [];
 		var count = [];
-		html_crime_var = text_for_html($("#selected_crime").text());
+		var html_crime_var = text_for_html($("#selected_crime").text());
 
 		$.getJSON( root_api + "crime/timeline/" + html_crime_var, function( data ) {
 
@@ -218,7 +219,7 @@ $(document).ready(function(){
 			  $('#info-pane').highcharts({
 			      chart:{backgroundColor:'rgba(0, 0, 0, 0.7)'},
 			      title: {
-				  text: 'Crime Occurences',
+				  text: $("#selected_crime").text() + " Timeline",
 				  x: -20 //center
 			      },
 			      xAxis: {
@@ -251,4 +252,104 @@ $(document).ready(function(){
 			});
 		});
 	};
+
+  function draw_hist() {
+
+		var neighborhoods = [];
+		var crime_numbers = [];
+    var html_crime_var = text_for_html($("#selected_crime").text());
+
+		$.getJSON( root_api + "crime/neighborhoodcount/" + html_crime_var, function( data ) {
+
+			//look at the data returned by your API
+			//console.log(data);
+
+			//What is the for loop doing?
+			// this function is looping through the results to build an array filled with the results from the api
+			for (i = 0; i < data.length; i++){
+                        neighborhoods.push(data[i].neighborhood);
+                        crime_numbers.push(data[i].crime_number);
+            }
+
+
+            //Replace XX by an appropriate div to display the histogram in
+			$('#display-pane').highcharts({
+		        chart: {
+		            type: 'column', backgroundColor:'rgba(0, 0, 0, 0.7)'
+		        },
+		        title: {
+		            text: $("#selected_crime").text() + ' per Neigborhhod'
+		        },
+		        xAxis: {
+		        	//replace XX by the array of categories
+		            categories: neighborhoods,
+		            title: {
+		                text: null
+		            },
+			    labels: {
+				style: {
+				    color: 'black',
+				    fontSize:'15px'
+				}
+            		    }
+		        },
+		        yAxis: {
+		            min: 0,
+		            title: {
+		                text: 'Number of trees',
+		                align: 'high',
+				style: {"color": "black", "fontWeight": "bold", "font-size": "15px" }
+		            },
+		            labels: {
+		                overflow: 'justify',
+                                style: {
+				    color: 'black',
+				    fontSize:'10px'
+				}
+		            }
+		        },
+		        tooltip: {
+		            valueSuffix: ' trees',
+		            formatter: function() {
+		            	//try other formatters if you want
+		    					return 'There are <b>'+ this.y +
+		           		'</b> Occurences in <b>' + this.x + '</b>';
+		  					}
+		        },
+		        plotOptions: {
+		            bar: {
+		                dataLabels: {
+		                    enabled: true
+		                }
+		            }
+		        },
+		        legend: {
+		            layout: 'vertical',
+		            align: 'right',
+		            verticalAlign: 'top',
+		            x: -40,
+		            y: 80,
+		            floating: true,
+		            borderWidth: 1,
+		            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+		            shadow: true
+		        },
+		        credits: {
+		            enabled: false
+		        },
+		        series: [{
+		        	//replace XX by the array of values
+		        	data: crime_numbers,
+		          showInLegend:false
+		        }]
+		    }); // end of histogram function
+
+		}) // end of getJSON function
+
+	}; // end of draw_hist function
+
+  $("#info-pane").mouseenter(function() {draw_timeline()});
+  $("#info-pane").mouseleave(function() {draw_timeline()});
+  $("#display-pane").mouseenter(function() {draw_hist()});
+  $("#display-pane").mouseleave(function() {draw_hist()});
 });
