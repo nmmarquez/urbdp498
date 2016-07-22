@@ -51,6 +51,12 @@
 
             SideBAR.prototype.ignite = function () {
                 return (function (instance) {
+                  $("#info-pane").css({"visibility": "hidden"});
+                  $("#display-pane").css({"visibility": "hidden"});
+                  instance.adjustPaddingOnExpand();
+                  instance.expandMyMenu();
+                  instance.showMenuTexts();
+                  instance.showActiveSubMenu();
                     return $("#justify-icon").click(function (e) {
                         if ($(this).parent("nav.sidebar").hasClass("sidebar-menu-collapsed")) {
                             $("#info-pane").css({"visibility": "hidden"});

@@ -190,3 +190,17 @@ html, body, #container{
     line-height: 0px;
     font-size: 0px;
 }
+
+#description{
+  font-size: 14px;
+  max-width: 300px;
+}
+
+#description_break{
+  visibility: hidden;
+}
+
+#description2{
+  font-size: 14px;
+  max-width: 300px;
+}

@@ -1,5 +1,5 @@
 var root_api = "http://nmarquez.ovid.u.washington.edu:1112/";
-var mymap = L.map('map', { zoomControl:false }).setView([47.6,-122.3], 13);
+var mymap = L.map('map', { zoomControl:false }).setView([47.60460055698954,-122.38065719604491], 13);
 
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -138,4 +138,11 @@ $(document).ready(function(){
     $("#display-pane").css({"width": "15%", "height": "20%"});
     draw_hist()
   });
+
+  // $("#info-pane").css({"visibility": "hidden"});
+  // $("#display-pane").css({"visibility": "hidden"});
+  // $('#mybar').adjustPaddingOnExpand();
+  // $('#mybar').expandMyMenu();
+  // $('#mybar').showMenuTexts();
+  // $('#mybar').showActiveSubMenu();
 });
