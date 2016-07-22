@@ -119,15 +119,21 @@ $(document).ready(function(){
 
 
   $("#info-pane").mouseenter(function() {
+    $("#info-pane").css({"width": "60%", "height": "90%"});
     draw_timeline()
   });
   $("#info-pane").mouseleave(function() {
+    $('#info-pane').highcharts().destroy();
+    $("#info-pane").css({"width": "15%", "height": "20%"});
     draw_timeline()
   });
   $("#display-pane").mouseenter(function() {
+    $("#display-pane").css({"width": "60%", "height": "90%"});
     draw_hist()
   });
   $("#display-pane").mouseleave(function() {
+    $('#display-pane').highcharts().destroy();
+    $("#display-pane").css({"width": "15%", "height": "20%"});
     draw_hist()
   });
 });

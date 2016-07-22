@@ -148,19 +148,6 @@ html, body, #container{
     color: 'block';
 }
 
-#display-pane:hover{
-    position: absolute;
-    font-family: 'Roboto', sans-serif;
-    background-color: rgba(255,255,255,0.2);
-    padding: 10px;
-    font-size: 30px;
-    bottom: 5px;
-    right: 5px;
-    width: 60%;
-    height: 90%;
-    color: 'block';
-}
-
 #info-pane{
     position: absolute;
     font-family: 'Roboto', sans-serif;
@@ -172,19 +159,6 @@ html, body, #container{
     color: 'black';
     width: 15%;
     height: 20%;
-}
-
-#info-pane:hover{
-  position: absolute;
-  font-family: 'Roboto', sans-serif;
-  background-color: rgba(255,255,255,0.2);
-  padding: 0px;
-  font-size: 30px;
-  bottom: 5px;
-  left: 47px;
-  color: 'black';
-  width: 60%;
-  height: 90%;
 }
 
 #title{
